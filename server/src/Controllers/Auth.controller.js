@@ -2,6 +2,9 @@ import Signup from "../Models/auth/Signup.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import crypto from "crypto";
+import { getResetPasswordEmail } from "../emails/index.js";
+import sendEmail from "../middlewares/nodemail.js";
 dotenv.config();
 
 const secretKey = process.env.JWT_SECRETKEY;
@@ -102,4 +105,43 @@ const LoginController = async (req, res) => {
   }
 };
 
-export { SignupController, LoginController };
+const ForgotPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await Signup.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Email does not exist" });
+    }
+
+    //Create a random token.
+    const rawToken = crypto.randomBytes(32).toString("hex");
+
+    //Hash the token
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(rawToken)
+      .digest("hex");
+
+    user.resetPasswordToken = hashedToken;
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+
+    await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${rawToken}`;
+    const html = getResetPasswordEmail(resetUrl);
+
+    await sendEmail({
+      to: user.email,
+      subject: "Reset Your Password",
+      html,
+    });
+
+    res.json({ message: "Reset password email sent successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error sending reset Email" });
+  }
+};
+
+export { SignupController, LoginController, ForgotPassword };

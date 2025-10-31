@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  ForgotPassword,
   LoginController,
   SignupController,
 } from "../Controllers/Auth.controller.js";
@@ -10,5 +11,6 @@ const router = express.Router();
 
 router.post("/signup", validateSchema(registerSchema), SignupController);
 router.post("/login", validateSchema(loginSchema), LoginController);
+router.post("/forgotPassword", ForgotPassword);
 
 export default router;
