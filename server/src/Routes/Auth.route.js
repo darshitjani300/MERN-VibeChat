@@ -2,6 +2,7 @@ import express from "express";
 import {
   ForgotPassword,
   LoginController,
+  ResetPassword,
   SignupController,
 } from "../Controllers/Auth.controller.js";
 import validateSchema from "../middlewares/validator.js";
@@ -12,5 +13,6 @@ const router = express.Router();
 router.post("/signup", validateSchema(registerSchema), SignupController);
 router.post("/login", validateSchema(loginSchema), LoginController);
 router.post("/forgotPassword", ForgotPassword);
+router.post("/resetPassword", ResetPassword);
 
 export default router;

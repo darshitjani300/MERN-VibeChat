@@ -27,3 +27,20 @@ export const signupSchema = Yup.object({
     "Password must have at least 8 characters, one uppercase, one lowercase, one number and one special character"
   ),
 });
+
+export const forgetSchema = Yup.object({
+  email: Yup.string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+});
+
+export const resetSchema = Yup.object({
+  password: Yup.string().matches(
+    passwordRules,
+    "Password must have at least 8 characters, one uppercase, one lowercase, one number and one special character"
+  ),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
+  token: Yup.string().required("Token is required"),
+});

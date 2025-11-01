@@ -4,7 +4,6 @@ import AuthRoute from "./src/Routes/Auth.route.js";
 import connectDB from "./src/db/db.js";
 import cors from "cors";
 import verifyToken from "./src/Utils/verifyToken.js";
-import fetch from "node-fetch";
 
 const app = express();
 configDotenv();

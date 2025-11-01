@@ -17,6 +17,12 @@ const Signup = new Schema(
       required: true,
       minLength: 6,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpire: {
+      type: Date,
+    },
   },
   {
     timestamps: true,

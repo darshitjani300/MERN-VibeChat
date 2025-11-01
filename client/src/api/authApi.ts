@@ -12,3 +12,17 @@ export const loginApi = async (userData: {
   const response = await axiosInstace.post("/auth/login", userData);
   return response?.data;
 };
+
+export const forgetApi = async (data: { email: string }) => {
+  const response = await axiosInstace.post("/auth/forgotPassword", data);
+  return response.data;
+};
+
+export const resetApi = async (data: {
+  password: string;
+  confirmPassword: string;
+  token: string;
+}) => {
+  const response = await axiosInstace.post("/auth/resetPassword", data);
+  return response.data;
+};

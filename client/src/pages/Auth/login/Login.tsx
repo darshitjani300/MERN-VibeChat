@@ -107,7 +107,11 @@ const Login = () => {
         <div className={styles.rightSideContainer}>
           <div className={styles.rightCont}>
             <div className={styles.upperCont}>
-              <img src="/public/favicon.svg" alt="Logo" className={styles.logo} />
+              <img
+                src="/public/favicon.svg"
+                alt="Logo"
+                className={styles.logo}
+              />
               <h1>QuickChat</h1>
             </div>
 
@@ -139,7 +143,9 @@ const Login = () => {
                     <input type="checkbox" />
                     <label htmlFor="checkbox">Remeber me</label>
                   </div>
-                  <p className={styles.pforget}>Forgot Password?</p>
+                  <p className={styles.pforget}>
+                    <Link to={"/forgetpassword"}>Forgot Password?</Link>
+                  </p>
                 </div>
                 <ButtonComp btn="Login" loading={loading} />
               </div>

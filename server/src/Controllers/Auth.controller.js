@@ -126,9 +126,13 @@ const ForgotPassword = async (req, res) => {
     user.resetPasswordToken = hashedToken;
     user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
 
+    console.log("Time ", Date.now() + 15 * 60 * 1000);
+    console.log("hashed Token ", hashedToken);
+    console.log("Raw token ", rawToken);
+
     await user.save({ validateBeforeSave: false });
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${rawToken}`;
+    const resetUrl = `${process.env.CLIENT_URL}/resetpassword?token=${rawToken}`;
     const html = getResetPasswordEmail(resetUrl);
 
     await sendEmail({
@@ -144,4 +148,50 @@ const ForgotPassword = async (req, res) => {
   }
 };
 
-export { SignupController, LoginController, ForgotPassword };
+const ResetPassword = async (req, res) => {
+  const { password, confirmPassword, token } = req.body;
+
+  if (!token || !password || !confirmPassword) {
+    return res.status(400).json({ message: "Required fields missing." });
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: "Passwords do not match." });
+  }
+
+  try {
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await Signup.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message:
+          "Invalid or expired reset token. Please request a new password reset.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.password = hashedPassword;
+
+    user.resetPasswordToken = null;
+    user.resetPasswordExpire = null;
+
+    await user.save();
+    return res.status(200).json({
+      message:
+        "Password Reset Sucessfully, You can login with your new password",
+    });
+  } catch (err) {
+    console.log("Reset Error ", err);
+    return res
+      .status(500)
+      .json({ message: "Server error while resetting password." });
+  }
+};
+
+export { SignupController, LoginController, ForgotPassword, ResetPassword };

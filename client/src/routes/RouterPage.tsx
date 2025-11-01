@@ -1,9 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "../pages/Auth/login/Login";
 import Signup from "../pages/Auth/signup/Signup";
-import PublicRoute from "./PublicRoute";
-import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PrivateRoute";
+import ProtectedRoute from "./PublicRoute";
 import Home from "../pages/Home";
+import ForgetPassword from "../pages/Auth/forget/ForgetPassword";
+import ResetPassword from "../pages/Auth/reset/ResetPassword";
 
 const RouterPage = () => {
   return (
@@ -24,6 +26,22 @@ const RouterPage = () => {
           element={
             <PublicRoute>
               <Signup />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/forgetpassword"
+          element={
+            <PublicRoute>
+              <ForgetPassword />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/resetpassword"
+          element={
+            <PublicRoute>
+              <ResetPassword />
             </PublicRoute>
           }
         />

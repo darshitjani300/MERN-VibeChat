@@ -7,8 +7,8 @@ type Props = {
 };
 
 const PublicRoute = ({ children }: Props) => {
-  if (isAuthenticated()) {
-    return <Navigate to={"/home"} replace />;
+  if (!isAuthenticated()) {
+    return <Navigate to={"/login"} replace />;
   }
   return <>{children}</>;
 };
