@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styles from "./resetpassword.module.scss";
+import React, { useEffect, useState } from "react";
+import styles from "../styles/auth.module.scss";
 import InputComp from "../../../components/input/InputComp";
 import ButtonComp from "../../../components/button/Button";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { resetApi } from "../../../api/authApi";
 import { toastMessage } from "../../../utils/toastMessage";
 import { resetSchema } from "../../../validations/authSchema";
@@ -35,6 +35,13 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [isResetSuccess, setIsResetSuccess] = useState<boolean>(false);
   const [searchParams, _] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchParams.get("token") === null) {
+      navigate("/");
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -99,33 +106,34 @@ const ResetPassword = () => {
 
   return (
     <section>
-      <div className={styles.mainCont}>
-        {/* LEFT SIDE IMAGE */}
-        <div className={styles.leftSideContainer}>
-          <img src="/src/assets/images/reset.jpg" alt="Reset Password" />
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <img src="/src/assets/images/reset.webp" alt="VibeChat background" />
         </div>
 
-        {/* RIGHT SIDE CONTENT */}
-        <div className={styles.rightSideContainer}>
-          <div className={styles.rightCont}>
-            {/* Logo and App Name */}
-            <div className={styles.upperCont}>
+        <div className={styles.formContainer}>
+          <div className={styles.formWrapper}>
+            <div className={styles.header}>
               <img
-                src="/public/favicon.svg"
-                alt="Logo"
+                src="/favicon.svg"
+                alt="VibeChat logo"
                 className={styles.logo}
               />
-              <h1>QuickChat</h1>
+              <h1>VibeChat</h1>
             </div>
 
             {isResetSuccess ? (
               <div className={styles.successCont}>
-                <h2>Password Reset Successful 🎉</h2>
-                <p>
-                  Your password has been updated successfully. You can now log
-                  in with your new credentials.
+                <h2 className={styles.title}>
+                  Password updated successfully 🎉
+                </h2>
+                <p className={styles.subtitle}>
+                  You’re all set, <strong>VibeChatter</strong>! Your password
+                  has been securely updated — you can now sign in and continue
+                  your conversations without missing a beat.
                 </p>
-                <hr className={styles.hrfull} />
+
+                <hr className={styles.divider} />
 
                 <Link to="/login">
                   <ButtonComp btn="Back to Login" />
@@ -133,43 +141,41 @@ const ResetPassword = () => {
               </div>
             ) : (
               <>
-                {/* Reset Password Form */}
-                <form className={styles.inpCont} onSubmit={handleSubmit}>
-                  <h2 className={styles.title}>Reset your password</h2>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                  <h2 className={styles.title}>Set a new password 🔒</h2>
+                  <p className={styles.subtitle}>
+                    Looks like you’re getting back in — great to have you again!
+                    Choose a strong password to secure your VibeChat account.
+                  </p>
 
-                  <div>
-                    <InputComp
-                      placeholder="Enter new password"
-                      label="New Password"
-                      inputType="password"
-                      name="password"
-                      value={userData.password}
-                      onChange={handleChange}
-                      error={errorState.password}
-                    />
-                    <InputComp
-                      placeholder="Confirm new password"
-                      label="Confirm Password"
-                      inputType="password"
-                      name="confirmPassword"
-                      value={userData.confirmPassword}
-                      onChange={handleChange}
-                      error={errorState.confirmPassword}
-                    />
-                  </div>
+                  <InputComp
+                    placeholder="Enter new password"
+                    label="New Password"
+                    inputType="password"
+                    name="password"
+                    value={userData.password}
+                    onChange={handleChange}
+                    error={errorState.password}
+                  />
+                  <InputComp
+                    placeholder="Confirm new password"
+                    label="Confirm Password"
+                    inputType="password"
+                    name="confirmPassword"
+                    value={userData.confirmPassword}
+                    onChange={handleChange}
+                    error={errorState.confirmPassword}
+                  />
 
-                  <div className={styles.btnContainer}>
-                    <ButtonComp btn="Reset Password" loading={loading} />
-                  </div>
+                  <ButtonComp btn="Reset Password" loading={loading} />
                 </form>
 
-                <hr className={styles.hrfull} />
+                <hr className={styles.divider} />
 
-                {/* Footer */}
-                <div className={styles.lowerCont}>
-                  <p className={styles.donthave}>
+                <div className={styles.formFooter}>
+                  <p className={styles.rememberSection}>
                     Remembered your password?{" "}
-                    <span className={styles.signup}>
+                    <span className={styles.rememberLink}>
                       <Link to="/login">Back to Login</Link>
                     </span>
                   </p>

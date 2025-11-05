@@ -8,8 +8,18 @@ type Props = {
 const ButtonComp = (props: Props) => {
   const { btn, loading } = props;
   return (
-    <button className={styles.btn} disabled={loading} type="submit">
-      {btn}
+    <button
+      className={`${styles.btn} ${loading ? styles.loading : ""} `}
+      disabled={loading}
+      type="submit"
+    >
+      {loading ? (
+        <>
+          <div className={styles.spinner}></div>Loading...
+        </>
+      ) : (
+        btn
+      )}
     </button>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./signup.module.scss";
+import styles from "../styles/auth.module.scss";
 import InputComp from "../../../components/input/InputComp";
 import ButtonComp from "../../../components/button/Button";
 import { signupApi } from "../../../api/authApi";
@@ -100,22 +100,33 @@ const Signup = () => {
 
   return (
     <section>
-      <div className={styles.mainCont}>
-        <div className={styles.leftSideContainer}>
-          <img src="/src/assets/images/signup.jpg" alt="Logo" />
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <img
+            src="/src/assets/images/signup.webp"
+            alt="VibeChat background"
+          />
         </div>
-        <div className={styles.rightSideContainer}>
-          <div className={styles.rightCont}>
-            <div className={styles.upperCont}>
+
+        <div className={styles.formContainer}>
+          <div className={styles.formWrapper}>
+            {/* Header section */}
+            <div className={styles.header}>
               <img
-                src="/public/favicon.svg"
-                alt="Logo"
+                src="/favicon.svg"
+                alt="VibeChat logo"
                 className={styles.logo}
               />
-              <h1>QuickChat</h1>
+              <h1>VibeChat</h1>
             </div>
-            <form className={styles.inpCont} onSubmit={handleSubmit}>
-              <h2 className={styles.nicework}>Let’s get you started!</h2>
+
+            {/* Form section */}
+            <form className={styles.form} onSubmit={handleSubmit}>
+              <h2 className={styles.title}>Create your VibeChat account 🚀</h2>
+              <p className={styles.subtitles}>
+                Join thousands of conversations happening every day. Quick,
+                private, and made for connection.
+              </p>
               <div>
                 <InputComp
                   placeholder="Enter name"
@@ -145,18 +156,19 @@ const Signup = () => {
                   error={errorState.password}
                 />
               </div>
-              <div>
-                <ButtonComp btn="Sign up" loading={loading} />
-              </div>
+              <ButtonComp btn="Sign up" loading={loading} />
             </form>
-            <hr className={styles.hrfull} />
-            <div className={styles.lowerCont}>
+
+            <hr className={styles.divider} />
+
+            {/* Alternative login */}
+            <div className={styles.altLogin}>
               <ButtonComp btn="Or Sign up with Google" />
-              <p className={styles.donthave}>
+              <p className={styles.switchAuth}>
                 Aready have an account?{" "}
-                <span className={styles.signup}>
-                  <Link to={"/login"}>Login now</Link>
-                </span>
+                <Link to={"/login"} className={styles.switchLink}>
+                  Login now
+                </Link>
               </p>
             </div>
           </div>

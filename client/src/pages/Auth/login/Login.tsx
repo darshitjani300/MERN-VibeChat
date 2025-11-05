@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./login.module.scss";
+import styles from "../styles/auth.module.scss";
 import InputComp from "../../../components/input/InputComp";
 import ButtonComp from "../../../components/button/Button";
 import { Link, useNavigate } from "react-router-dom";
@@ -99,24 +99,32 @@ const Login = () => {
 
   return (
     <section>
-      <div className={styles.mainCont}>
-        <div className={styles.leftSideContainer}>
-          <img src="/src/assets/images/login.jpg" alt="Logo" />
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <img src="/src/assets/images/login.webp" alt="VibeChat background" />
         </div>
 
-        <div className={styles.rightSideContainer}>
-          <div className={styles.rightCont}>
-            <div className={styles.upperCont}>
+        <div className={styles.formContainer}>
+          <div className={styles.formWrapper}>
+            {/* Header */}
+            <div className={styles.header}>
               <img
-                src="/public/favicon.svg"
-                alt="Logo"
+                src="/favicon.svg"
+                alt="VibeChat logo"
                 className={styles.logo}
               />
-              <h1>QuickChat</h1>
+              <h1>VibeChat</h1>
             </div>
 
-            <form className={styles.inpCont} onSubmit={handleSubmit}>
-              <h2 className={styles.nicework}>Nice to see you again</h2>
+            {/* Login Form */}
+            <form className={styles.form} onSubmit={handleSubmit}>
+              <h2 className={styles.title}>Welcome back 👋</h2>
+
+              <p className={styles.subtitle}>
+                Connecting you with the people who matter — fast, secure, and
+                seamless.
+              </p>
+
               <div>
                 <InputComp
                   placeholder="Enter email"
@@ -137,29 +145,31 @@ const Login = () => {
                   error={errorState.password}
                 />
               </div>
-              <div>
-                <div className={styles.forget}>
-                  <div className={styles.remeb}>
-                    <input type="checkbox" />
-                    <label htmlFor="checkbox">Remeber me</label>
-                  </div>
-                  <p className={styles.pforget}>
-                    <Link to={"/forgetpassword"}>Forgot Password?</Link>
-                  </p>
+
+              <div className={styles.formFooter}>
+                <div className={styles.rememberSection}>
+                  <input type="checkbox" id="remember" />
+                  <label htmlFor="checkbox">Remember me</label>
                 </div>
-                <ButtonComp btn="Login" loading={loading} />
+
+                <Link to={"/forgetpassword"} className={styles.forgotLink}>
+                  Forgot Password?
+                </Link>
               </div>
+
+              <ButtonComp btn="Login" loading={loading} />
             </form>
 
-            <hr className={styles.hrfull} />
+            <hr className={styles.divider} />
 
-            <div className={styles.lowerCont}>
-              <ButtonComp btn="Or Sign in with Google" />
-              <p className={styles.donthave}>
-                Don't have an account?{" "}
-                <span className={styles.signup}>
-                  <Link to={"/signup"}>Sign up now</Link>
-                </span>
+            {/* Alternate Login */}
+            <div className={styles.altLogin}>
+              <ButtonComp btn="Continue with Google" />
+              <p className={styles.switchAuth}>
+                New here?{" "}
+                <Link to="/signup" className={styles.switchLink}>
+                  Create an account
+                </Link>
               </p>
             </div>
           </div>

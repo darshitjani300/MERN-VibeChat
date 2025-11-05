@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./forgetpassword.module.scss";
+import styles from "../styles/auth.module.scss";
 import InputComp from "../../../components/input/InputComp";
 import ButtonComp from "../../../components/button/Button";
 import { Link } from "react-router-dom";
@@ -53,69 +53,70 @@ const ForgetPassword = () => {
 
   return (
     <section>
-      <div className={styles.mainCont}>
-        {/* LEFT SIDE */}
-        <div className={styles.leftSideContainer}>
-          <img src="/src/assets/images/forget.jpg" alt="Forgot Password" />
+      <div className={styles.container}>
+        <div className={styles.imageContainer}>
+          <img
+            src="/src/assets/images/forget.webp"
+            alt="VibeChat background"
+          />
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className={styles.rightSideContainer}>
-          <div className={styles.rightCont}>
-            <div className={styles.upperCont}>
+        <div className={styles.formContainer}>
+          <div className={styles.formWrapper}>
+            <div className={styles.header}>
               <img
-                src="/public/favicon.svg"
-                alt="Logo"
+                src="/favicon.svg"
+                alt="VibeChat logo"
                 className={styles.logo}
               />
-              <h1>QuickChat</h1>
+              <h1>VibeChat</h1>
             </div>
 
             {isEmailSent ? (
               <div className={styles.successCont}>
-                <h2>Check your email</h2>
-                <p>
-                  We’ve sent a password reset link to <b>{email}</b>. Please
-                  check your inbox and follow the link to reset your password.
+                <h2 className={styles.title}>Check your inbox 📬</h2>
+                <p className={styles.subtitle}>
+                  We’ve sent a secure password reset link to
+                  <b> {email}</b>. Click the link inside to create a new
+                  password and get back to chatting in no time.
                 </p>
 
-                <hr className={styles.hrfull} />
+                <hr className={styles.divider} />
+
                 <Link to="/login">
                   <ButtonComp btn="Back to Login" />
                 </Link>
               </div>
             ) : (
               <>
-                <form className={styles.inpCont} onSubmit={handleSubmit}>
+                <form className={styles.form} onSubmit={handleSubmit}>
                   <h2 className={styles.title}>Forgot your password?</h2>
                   <p className={styles.subtitle}>
-                    No worries! Enter your email below and we’ll send you a
-                    password reset link.
+                    Happens to the best of us 😅 Enter your registered email,
+                    and we’ll send you a secure link to reset your password.
                   </p>
 
-                  <div>
-                    <InputComp
-                      placeholder="Enter your email"
-                      label="Email"
-                      name="email"
-                      inputType="email"
-                      value={email}
-                      onChange={handleChange}
-                      error={errorState}
-                    />
-                  </div>
+                  <InputComp
+                    placeholder="Enter your email"
+                    label="Email"
+                    name="email"
+                    inputType="email"
+                    value={email}
+                    onChange={handleChange}
+                    error={errorState}
+                  />
 
                   <ButtonComp btn="Send Reset Link" loading={loading} />
                 </form>
 
-                <hr className={styles.hrfull} />
+                <hr className={styles.divider} />
 
-                <div className={styles.lowerCont}>
-                  <p className={styles.donthave}>
+                <div className={styles.formFooter}>
+                  <p className={styles.rememberSection}>
                     Remembered your password?{" "}
-                    <span className={styles.signup}>
-                      <Link to={"/login"}>Back to Login</Link>
-                    </span>
+                    <Link to={"/login"} className={styles.rememberLink}>
+                      Back to Login
+                    </Link>
                   </p>
                 </div>
               </>
