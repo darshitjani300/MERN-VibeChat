@@ -1,0 +1,19 @@
+@use "../../../assets/styles/entry" as *;
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: $color-background;
+
+  .upperContainer,
+  .lowerContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  // .activeIcon {
+  // }
+}

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { homeApi } from "../api/homeApi";
 import { toastMessage } from "../utils/toastMessage";
+import NavMenu from "./Home/navbar/NavMenu";
 
 const Home = () => {
   const getHomeData = async () => {
@@ -16,7 +17,12 @@ const Home = () => {
     getHomeData();
   }, []);
 
-  return <div>Home</div>;
+  return (
+    <div className="" style={{ display: "flex", gap: 30 }}>
+      <NavMenu />
+      <h1>Home</h1>
+    </div>
+  );
 };
 
 export default Home;
