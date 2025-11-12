@@ -1,7 +1,13 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const Signup = new Schema(
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+}
+
+const Signup = new Schema<IUser>(
   {
     username: {
       type: String,
@@ -17,16 +23,11 @@ const Signup = new Schema(
       required: true,
       minLength: 6,
     },
-    resetPasswordToken: {
-      type: String,
-    },
-    resetPasswordExpire: {
-      type: Date,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-export default mongoose.model("Users", Signup);
+const User = mongoose.model("user", Signup);
+export default User;

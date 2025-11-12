@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   ForgotPassword,
   LoginController,
@@ -8,7 +8,7 @@ import {
 import validateSchema from "../middlewares/validator.js";
 import { loginSchema, registerSchema } from "../validators/auth.schema.js";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.post("/signup", validateSchema(registerSchema), SignupController);
 router.post("/login", validateSchema(loginSchema), LoginController);

@@ -1,15 +1,30 @@
-import Signup from "../Models/auth/Signup.js";
+import { Request, Response } from "express";
+import PasswordReset, { IPasswordReset } from "../Models/auth/PasswordReset.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import { getResetPasswordEmail } from "../emails/index.js";
 import sendEmail from "../middlewares/nodemail.js";
+import User, { IUser } from "../Models/auth/Signup.js";
+import {
+  ForgetRequestBody,
+  ForgetResponseBody,
+  LoginRequestBody,
+  LoginResponseBody,
+  ResetRequestBody,
+  ResetResponseBody,
+  SignupRequestBody,
+  SignupResponseBody,
+} from "../types/auth.js";
 dotenv.config();
 
-const secretKey = process.env.JWT_SECRETKEY;
+const secretKey = process.env.JWT_SECRETKEY as Secret;
 
-const SignupController = async (req, res) => {
+const SignupController = async (
+  req: Request<{}, {}, SignupRequestBody>,
+  res: Response<SignupResponseBody>
+) => {
   try {
     const { username, email, password } = req.body;
 
@@ -19,7 +34,7 @@ const SignupController = async (req, res) => {
         ?.json({ message: "All the fields are required." });
     }
 
-    const userExist = await Signup?.findOne({ email });
+    const userExist = await User?.findOne({ email });
     if (userExist) {
       return res?.status(409)?.json({
         message: "User already exists.",
@@ -28,7 +43,7 @@ const SignupController = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new Signup({
+    const newUser = new User<IUser>({
       username,
       email,
       password: hashedPassword,
@@ -36,7 +51,7 @@ const SignupController = async (req, res) => {
 
     await newUser.save();
 
-    let token;
+    let token: string;
     try {
       token = jwt.sign({ userId: newUser.id, email }, secretKey, {
         expiresIn: "1h",
@@ -54,20 +69,26 @@ const SignupController = async (req, res) => {
       },
     });
   } catch (error) {
-    return res
-      ?.status(500)
-      ?.json({ message: "Internal server Error", error: error.message });
+    if (error instanceof Error) {
+      return res
+        ?.status(500)
+        ?.json({ message: "Internal server Error", error: error.message });
+    }
   }
 };
 
-const LoginController = async (req, res) => {
+const LoginController = async (
+  req: Request<{}, {}, LoginRequestBody>,
+  res: Response<LoginResponseBody>
+) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res.status(400).json({ message: "All the fields are required" });
     }
 
-    let existUser = await Signup.findOne({ email });
+    let existUser = await User.findOne({ email });
     if (!existUser) {
       return res.status(409).json({ message: "User does not exists" });
     }
@@ -78,7 +99,7 @@ const LoginController = async (req, res) => {
       return res.status(409).json({ message: "Enter valid password" });
     }
 
-    let token;
+    let token: string;
     try {
       token = jwt.sign(
         {
@@ -105,11 +126,14 @@ const LoginController = async (req, res) => {
   }
 };
 
-const ForgotPassword = async (req, res) => {
+const ForgotPassword = async (
+  req: Request<{}, {}, ForgetRequestBody>,
+  res: Response<ForgetResponseBody>
+) => {
   const { email } = req.body;
 
   try {
-    const user = await Signup.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "Email does not exist" });
     }
@@ -123,14 +147,15 @@ const ForgotPassword = async (req, res) => {
       .update(rawToken)
       .digest("hex");
 
-    user.resetPasswordToken = hashedToken;
-    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+    await PasswordReset.deleteMany({ user: user._id });
 
-    console.log("Time ", Date.now() + 15 * 60 * 1000);
-    console.log("hashed Token ", hashedToken);
-    console.log("Raw token ", rawToken);
+    const resetEntry: IPasswordReset = new PasswordReset({
+      user: user._id,
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: Date.now() + 15 * 60 * 1000,
+    });
 
-    await user.save({ validateBeforeSave: false });
+    await resetEntry.save();
 
     const resetUrl = `${process.env.CLIENT_URL}/resetpassword?token=${rawToken}`;
     const html = getResetPasswordEmail(resetUrl);
@@ -148,7 +173,10 @@ const ForgotPassword = async (req, res) => {
   }
 };
 
-const ResetPassword = async (req, res) => {
+const ResetPassword = async (
+  req: Request<{}, {}, ResetRequestBody>,
+  res: Response<ResetResponseBody>
+) => {
   const { password, confirmPassword, token } = req.body;
 
   if (!token || !password || !confirmPassword) {
@@ -162,26 +190,34 @@ const ResetPassword = async (req, res) => {
   try {
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-    const user = await Signup.findOne({
-      resetPasswordToken: hashedToken,
+    const resetEntry = await PasswordReset.findOne({
       resetPasswordExpire: { $gt: Date.now() },
+      resetPasswordToken: hashedToken,
+      used: false,
     });
+
+    if (!resetEntry) {
+      return res.status(400).json({
+        message:
+          "Invalid or expired reset token. Please request a new password reset",
+      });
+    }
+
+    const user = await User.findOne({ _id: resetEntry.user });
 
     if (!user) {
       return res.status(400).json({
-        message:
-          "Invalid or expired reset token. Please request a new password reset.",
+        message: "User not found.",
       });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     user.password = hashedPassword;
-
-    user.resetPasswordToken = null;
-    user.resetPasswordExpire = null;
-
     await user.save();
+
+    resetEntry.used = true;
+    await resetEntry.save();
+
     return res.status(200).json({
       message:
         "Password Reset Sucessfully, You can login with your new password",

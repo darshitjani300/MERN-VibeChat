@@ -7,7 +7,9 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -20,6 +22,13 @@
     "nodemailer": "^7.0.10"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.10.0",
+    "npm": "^11.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

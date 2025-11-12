@@ -1,6 +1,15 @@
-import jwt from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 
-const verifyToken = (req, res, next) => {
+interface IAuthenticated extends Request {
+  userId?: string;
+}
+
+const verifyToken = (
+  req: IAuthenticated,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.header("Authorization");
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -8,7 +17,7 @@ const verifyToken = (req, res, next) => {
 
   try {
     const secretKey = process.env.JWT_SECRETKEY;
-    const decoded = jwt.verify(token, secretKey);
+    const decoded = jwt.verify(token, secretKey as Secret) as JwtPayload;
 
     req.userId = decoded.userId;
 

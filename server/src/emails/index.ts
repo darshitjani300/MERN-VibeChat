@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __fileName = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__fileName);
 
-export const getResetPasswordEmail = (resetUrl) => {
+export const getResetPasswordEmail = (resetUrl: string): string => {
   //Read the HTML template.
   const templatePath = path.join(
     __dirname,
@@ -17,7 +17,7 @@ export const getResetPasswordEmail = (resetUrl) => {
     throw new Error(`Template not found: ${templatePath}`);
   }
 
-  let html = fs.readFileSync(templatePath, "utf-8");
+  let html: string = fs.readFileSync(templatePath, "utf-8");
   html = html.replace("{{resetUrl}}", resetUrl);
   return html;
 };
