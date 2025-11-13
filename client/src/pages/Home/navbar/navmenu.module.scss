@@ -2,18 +2,66 @@
 
 .container {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px;
-  background-color: $color-background;
+  min-height: 0;
+  background: $color-white;
+  margin-right: 10px;
 
-  .upperContainer,
-  .lowerContainer {
+  .containerWrapper {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    padding: 20px 15px 0px 15px;
   }
-  // .activeIcon {
-  // }
+
+  .headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .headerLogo {
+      height: 50px;
+    }
+    padding-bottom: 2rem;
+  }
+
+  .iconContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    .upperContainer,
+    .lowerContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: 0.2s ease-in;
+      margin-bottom: 10px;
+
+      .text {
+        color: $gray-600;
+        font-size: small;
+        letter-spacing: 0.3px;
+        line-height: 20px;
+        min-width: 60px;
+        text-align: center;
+      }
+      .activeText {
+        font-weight: 600;
+      }
+      .iconStyle{
+        color: $color-icon;
+      }
+      
+      .iconStyleActive{
+        color: $color-primary;
+      }
+    }
+  }
 }

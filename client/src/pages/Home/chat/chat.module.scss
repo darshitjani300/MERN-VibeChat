@@ -1,0 +1,19 @@
+@use "../../../assets/styles/entry" as *;
+
+.container {
+  background-color: white;
+  height: 100vh;
+  width: 35%;
+  padding: 10px 20px;
+  margin-right: 10px;
+
+  .headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+}

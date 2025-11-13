@@ -4,6 +4,7 @@ export const setToken = (token: string) => {
 
 export const removeToken = () => {
   localStorage.removeItem("token");
+  window.location.reload();
 };
 
 export const getToken = () => localStorage.getItem("token");
