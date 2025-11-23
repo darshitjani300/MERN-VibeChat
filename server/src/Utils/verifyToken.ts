@@ -1,30 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 
-interface IAuthenticated extends Request {
-  userId?: string;
-}
+const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+  const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as Secret;
 
-const verifyToken = (
-  req: IAuthenticated,
-  res: Response,
-  next: NextFunction
-) => {
-  const authHeader = req.header("Authorization");
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = req.cookies?.access_token;
 
-  if (!token) return res.status(401).json({ error: "Access denied" });
+  if (!token) {
+    return res.status(401).json({ message: "Not authenticated" });
+  }
 
   try {
-    const secretKey = process.env.JWT_SECRETKEY;
-    const decoded = jwt.verify(token, secretKey as Secret) as JwtPayload;
-
-    req.userId = decoded.userId;
-
+    const payload: any = jwt.verify(token, ACCESS_TOKEN_SECRET);
+    (req as any).user = { userId: payload.userId };
     next();
   } catch (error) {
-    return res.status(403).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
-export default verifyToken;
+export default requireAuth;

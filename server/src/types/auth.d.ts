@@ -9,7 +9,7 @@ export interface SignupResponseBody {
   data?: {
     userId: string;
     email: string;
-    userToken: string;
+    username: string;
   };
   error?: string;
 }
@@ -24,7 +24,6 @@ export interface LoginResponseBody {
   data?: {
     userId: string;
     email: string;
-    userToken: string;
   };
   error?: string;
 }

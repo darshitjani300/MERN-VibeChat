@@ -5,6 +5,7 @@ export interface IUser {
   username: string;
   email: string;
   password: string;
+  refreshToken?: string;
 }
 
 const Signup = new Schema<IUser>(
@@ -22,6 +23,10 @@ const Signup = new Schema<IUser>(
       type: String,
       required: true,
       minLength: 6,
+    },
+    refreshToken: {
+      type: String,
+      default: null,
     },
   },
   {

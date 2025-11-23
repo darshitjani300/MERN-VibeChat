@@ -17,9 +17,12 @@ import {
   SignupRequestBody,
   SignupResponseBody,
 } from "../types/auth.js";
+import {
+  hashToken,
+  signAccessToken,
+  signRefreshToken,
+} from "../Utils/auth.utils.js";
 dotenv.config();
-
-const secretKey = process.env.JWT_SECRETKEY as Secret;
 
 const SignupController = async (
   req: Request<{}, {}, SignupRequestBody>,
@@ -41,6 +44,7 @@ const SignupController = async (
       });
     }
 
+    // hashing the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User<IUser>({
@@ -51,21 +55,43 @@ const SignupController = async (
 
     await newUser.save();
 
-    let token: string;
-    try {
-      token = jwt.sign({ userId: newUser.id, email }, secretKey, {
-        expiresIn: "1h",
-      });
-    } catch (error) {
-      return res.status(404).json({ message: "Error generating token" });
-    }
+    const accessToken = signAccessToken({
+      userId: newUser.id,
+      email: newUser.email,
+    });
+
+    const refreshToken = signRefreshToken({
+      userId: newUser.id,
+      email: newUser.email,
+    });
+
+    newUser.refreshToken = hashToken(refreshToken);
+    await newUser.save();
+
+    // Cookie options
+    const isProd = process.env.NODE_ENV === "production";
+    const cookieOptions = {
+      secure: isProd,
+      httpOnly: true,
+      sameSite: "lax" as "lax",
+    };
+
+    res.cookie("access_token", accessToken, {
+      ...cookieOptions,
+      maxAge: 1 * 60 * 60 * 1000,
+    });
+
+    res.cookie("refresh_token", refreshToken, {
+      ...cookieOptions,
+      maxAge: 1 * 24 * 60 * 60 * 1000,
+    });
 
     return res.status(201).json({
-      message: "User registered successfully.",
+      message: "User registered successfully",
       data: {
         userId: newUser.id,
+        username: newUser.username,
         email: newUser.email,
-        userToken: token,
       },
     });
   } catch (error) {
@@ -99,26 +125,38 @@ const LoginController = async (
       return res.status(409).json({ message: "Enter valid password" });
     }
 
-    let token: string;
-    try {
-      token = jwt.sign(
-        {
-          userId: existUser?.id,
-          email,
-        },
-        secretKey,
-        { expiresIn: "1h" }
-      );
-    } catch (error) {
-      return res.status(404).json({ message: "Error generating token" });
-    }
+    const accessToken = signAccessToken({ userId: existUser?.id, email });
+    const refreshToken = signRefreshToken({ userId: existUser?.id, email });
 
-    return res.status(201).json({
+    existUser.refreshToken = hashToken(refreshToken);
+    await existUser.save();
+
+    // Cookie options
+    const isProd = process.env.NODE_ENV === "production";
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: "lax" as "lax",
+    };
+
+    // Set cookies
+    // --> access token first
+    res.cookie("access_token", accessToken, {
+      ...cookieOptions,
+      maxAge: 1 * 60 * 60 * 1000, // 1 hour
+    });
+
+    // --> refresh token second
+    res.cookie("refresh_token", refreshToken, {
+      ...cookieOptions,
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return res.status(200).json({
       message: "User Login sucessfull",
       data: {
         userId: existUser.id,
         email,
-        userToken: token,
       },
     });
   } catch (error) {
@@ -168,7 +206,6 @@ const ForgotPassword = async (
 
     res.json({ message: "Reset password email sent successfully" });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error sending reset Email" });
   }
 };
@@ -223,11 +260,80 @@ const ResetPassword = async (
         "Password Reset Sucessfully, You can login with your new password",
     });
   } catch (err) {
-    console.log("Reset Error ", err);
     return res
       .status(500)
       .json({ message: "Server error while resetting password." });
   }
 };
 
-export { SignupController, LoginController, ForgotPassword, ResetPassword };
+const LogoutController = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies?.refresh_token;
+
+    if (token) {
+      try {
+        const payload: any = jwt.verify(
+          token,
+          process.env.REFRESH_TOKEN_SECRET as Secret
+        );
+
+        await User.findOneAndUpdate(payload.userId, {
+          $unset: { refreshToken: null },
+        });
+      } catch (error) {
+        console.log("Error verifying token:", error);
+      }
+    }
+
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token");
+
+    return res.status(200).json({ message: "Logged out" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const CheckAuthController = async (req: Request, res: Response) => {
+  const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET as Secret;
+  try {
+    const token = req.cookies?.access_token;
+    if (!token) {
+      return res.status(401).json({ message: "No access token" });
+    }
+
+    let payload: any;
+    try {
+      payload = jwt.verify(token, ACCESS_TOKEN_SECRET);
+    } catch (err) {
+      return res
+        .status(401)
+        .json({ message: "Invalid or expired access token" });
+    }
+
+    const user = await User.findById(payload.userId).select(
+      "_id email username"
+    );
+    if (!user) return res.status(401).json({ message: "User not found" });
+
+    return res.status(200).json({
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      },
+    });
+  } catch (error) {
+    console.error("CheckAuth error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export {
+  SignupController,
+  LoginController,
+  ForgotPassword,
+  ResetPassword,
+  LogoutController,
+  CheckAuthController,
+};
