@@ -1,5 +1,6 @@
 import NavIcon from "../../../components/icons/NavIcon";
 import styles from "./chat.module.scss";
+import Conversation from "./components/conversation/Conversation";
 import SelectFilter from "./components/filters/SelectFilter";
 import ChatSearch from "./components/search/ChatSearch";
 
@@ -14,6 +15,7 @@ const Chat = () => {
       </div>
       <ChatSearch />
       <SelectFilter />
+      <Conversation />
     </section>
   );
 };

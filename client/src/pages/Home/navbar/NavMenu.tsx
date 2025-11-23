@@ -56,10 +56,6 @@ const NavMenu = () => {
   return (
     <div className={styles.container}>
       <div className={styles.containerWrapper}>
-        {/* <div className={styles.headerContainer}>
-          <img src="/favicon.svg" alt="Logo" className={styles.headerLogo} />
-        </div> */}
-
         <div className={styles.iconContainer}>
           <ul className={styles.upperContainer}>
             {upperIcons &&

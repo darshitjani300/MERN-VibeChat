@@ -9,6 +9,7 @@ import {
 import { LuBot, LuBotOff } from "react-icons/lu";
 import { RiChatNewLine } from "react-icons/ri";
 import { IoIosSearch } from "react-icons/io";
+import { TbPinnedFilled } from "react-icons/tb";
 
 export {
   IoChatboxEllipses,
@@ -21,4 +22,5 @@ export {
   LuBotOff,
   RiChatNewLine,
   IoIosSearch,
+  TbPinnedFilled,
 };

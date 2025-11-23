@@ -67,7 +67,6 @@ const ResetPassword = () => {
       confirmPassword: userData?.confirmPassword,
       password: userData?.password,
       token: searchParams.get("token") || "",
-      // token:
     };
 
     try {

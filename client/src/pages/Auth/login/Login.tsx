@@ -4,9 +4,9 @@ import InputComp from "../../../components/input/InputComp";
 import ButtonComp from "../../../components/button/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "../../../api/authApi";
-import { setToken } from "../../../utils/auth";
 import { toastMessage } from "../../../utils/toastMessage";
 import { loginSchema } from "../../../validations/authSchema";
+import { useAuth } from "../../../context/AuthContext";
 
 interface ErrorState {
   email: string | null;
@@ -29,6 +29,7 @@ const Login = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { checkAuth } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -77,12 +78,9 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const { message, data } = await loginApi(dataObj);
+      const { message } = await loginApi(dataObj);
+      await checkAuth();
       toastMessage("success", message);
-
-      if (data?.userToken) {
-        setToken(data?.userToken);
-      }
 
       navigate("/home");
     } catch (error: any) {

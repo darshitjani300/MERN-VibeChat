@@ -1,0 +1,67 @@
+@use "../../../../../assets/styles/entry" as *;
+
+.container {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+
+  .imageContainer {
+    flex-shrink: 0;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid $color-secondary-bg;
+
+    .image {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .wrapperContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-width: 0;
+
+    .upperContainer {
+      display: flex;
+
+      .name {
+        flex: 1 1 0%;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .day {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+    }
+
+    .lowerContainer {
+      display: flex;
+      width: 100%;
+      flex: 1 1 0%;
+      min-width: 0;
+
+      .chat {
+        flex: 1 1 0%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+      }
+
+      .pinIcon {
+        flex: 0 0 auto;
+      }
+    }
+  }
+}

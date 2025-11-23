@@ -1,5 +1,5 @@
 import axios from "axios";
-import { removeToken } from "../../utils/auth";
+import { useAuth } from "../../context/AuthContext";
 
 const BaseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -9,24 +9,42 @@ const axiosInstace = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
-axiosInstace.interceptors.request.use(
-  (config: any) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+async function serverLogout() {
+  try {
+    await axiosInstace.post("/auth/logout", {}, { withCredentials: true });
+    localStorage.removeItem("user");
+    useAuth()
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 axiosInstace.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status == 403) {
-      removeToken()
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (originalRequest.url.includes("/auth/refresh")) {
+      await serverLogout();
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
+
+    // If access token is expired
+    if (error.response?.status == 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        await axiosInstace.post("/auth/refresh", {}, { withCredentials: true });
+
+        return axiosInstace(originalRequest);
+      } catch (error) {
+        window.location.href = "/login";
+        Promise.reject(error);
+      }
     }
     return Promise.reject(error);
   }

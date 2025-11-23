@@ -5,7 +5,7 @@ import ButtonComp from "../../../components/button/Button";
 import { signupApi } from "../../../api/authApi";
 import { toastMessage } from "../../../utils/toastMessage";
 import { Link, useNavigate } from "react-router-dom";
-import { setToken } from "../../../utils/auth";
+// import { setToken } from "../../../utils/auth";
 import { signupSchema } from "../../../validations/authSchema";
 
 interface LoginData {
@@ -84,7 +84,7 @@ const Signup = () => {
       const data = await signupApi(dataObj);
       toastMessage("success", data?.message);
       if (data?.data?.userToken) {
-        setToken(data?.data?.userToken);
+        // setToken(data?.data?.userToken);
       }
       navigate("/home");
     } catch (error: any) {
@@ -96,16 +96,11 @@ const Signup = () => {
     }
   };
 
-  console.log(errorState);
-
   return (
     <section>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
-          <img
-            src="/src/assets/images/signup.webp"
-            alt="VibeChat background"
-          />
+          <img src="/src/assets/images/signup.webp" alt="VibeChat background" />
         </div>
 
         <div className={styles.formContainer}>
