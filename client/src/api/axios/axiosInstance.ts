@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
 
 const BaseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -16,7 +15,7 @@ async function serverLogout() {
   try {
     await axiosInstace.post("/auth/logout", {}, { withCredentials: true });
     localStorage.removeItem("user");
-    useAuth()
+    window.location.href = "/login";
   } catch (error) {
     console.log(error);
   }
@@ -29,7 +28,6 @@ axiosInstace.interceptors.response.use(
 
     if (originalRequest.url.includes("/auth/refresh")) {
       await serverLogout();
-      window.location.href = "/login";
       return Promise.reject(error);
     }
 
@@ -39,10 +37,8 @@ axiosInstace.interceptors.response.use(
 
       try {
         await axiosInstace.post("/auth/refresh", {}, { withCredentials: true });
-
         return axiosInstace(originalRequest);
       } catch (error) {
-        window.location.href = "/login";
         Promise.reject(error);
       }
     }
