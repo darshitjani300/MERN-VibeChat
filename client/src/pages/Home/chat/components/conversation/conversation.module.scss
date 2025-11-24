@@ -1,66 +1,105 @@
 @use "../../../../../assets/styles/entry" as *;
 
-.container {
-  margin-top: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
+.conversationWrapper {
+  // height: 65%;
+  flex: 1; 
+  overflow-y: scroll;
+  padding-right: 10px;
+  box-sizing: border-box;
 
-  .imageContainer {
-    flex-shrink: 0;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid $color-secondary-bg;
-
-    .image {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-    }
+  &::-webkit-scrollbar {
+    width: 5px;
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
-  .wrapperContainer {
+  scrollbar-gutter: stable;
+
+  .containerWrapper {
     display: flex;
     flex-direction: column;
-    flex: 1 1 0%;
-    min-width: 0;
+    gap: 10px;
 
-    .upperContainer {
+    .container {
       display: flex;
-
-      .name {
-        flex: 1 1 0%;
-        min-width: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .day {
-        flex: 0 0 auto;
-        white-space: nowrap;
-      }
-    }
-
-    .lowerContainer {
-      display: flex;
+      align-items: center;
+      gap: 10px;
       width: 100%;
-      flex: 1 1 0%;
-      min-width: 0;
+      border-radius: 10px;
+      padding: 5px;
 
-      .chat {
-        flex: 1 1 0%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        min-width: 0;
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(246, 244, 244);
       }
 
-      .pinIcon {
-        flex: 0 0 auto;
+      .imageContainer {
+        flex-shrink: 0;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid $color-secondary-bg;
+        border-color: transparent;
+
+        .image {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .wrapperContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 0%;
+        min-width: 0;
+
+        .upperContainer {
+          display: flex;
+
+          .name {
+            flex: 1 1 0%;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .day {
+            font-size: small;
+            flex: 0 0 auto;
+            white-space: nowrap;
+          }
+        }
+
+        .lowerContainer {
+          display: flex;
+          width: 100%;
+          flex: 1 1 0%;
+          min-width: 0;
+
+          .chat {
+            flex: 1 1 0%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+          }
+
+          .pinIcon {
+            flex: 0 0 auto;
+          }
+        }
       }
     }
   }

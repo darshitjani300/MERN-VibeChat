@@ -1,0 +1,17 @@
+.messageContainer {
+  font-size: 30px;
+  background: #f1f4fa;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    .imageContainer {
+      height: 120px;
+    }
+  }
+}

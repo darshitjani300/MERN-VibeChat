@@ -5,8 +5,8 @@ import ButtonComp from "../../../components/button/Button";
 import { signupApi } from "../../../api/authApi";
 import { toastMessage } from "../../../utils/toastMessage";
 import { Link, useNavigate } from "react-router-dom";
-// import { setToken } from "../../../utils/auth";
 import { signupSchema } from "../../../validations/authSchema";
+import { useAuth } from "../../../context/AuthContext";
 
 interface LoginData {
   username: string;
@@ -32,7 +32,7 @@ const Signup = () => {
     password: null,
   });
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { checkAuth } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,10 +82,11 @@ const Signup = () => {
     try {
       setLoading(true);
       const data = await signupApi(dataObj);
+
+      await checkAuth();
+
       toastMessage("success", data?.message);
-      if (data?.data?.userToken) {
-        // setToken(data?.data?.userToken);
-      }
+
       navigate("/home");
     } catch (error: any) {
       toastMessage("error", error?.response?.data?.message);

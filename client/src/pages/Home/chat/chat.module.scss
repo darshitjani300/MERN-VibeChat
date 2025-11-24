@@ -6,6 +6,8 @@
   width: 35%;
   padding: 10px 15px;
   margin-right: 10px;
+  display: flex;
+  flex-direction: column;
 
   .headerContainer {
     display: flex;
