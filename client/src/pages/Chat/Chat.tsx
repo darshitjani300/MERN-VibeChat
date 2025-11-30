@@ -1,4 +1,4 @@
-import NavIcon from "../../../components/icons/NavIcon";
+import NavIcon from "../../components/icons/NavIcon";
 import styles from "./chat.module.scss";
 import Conversation from "./components/conversation/Conversation";
 import SelectFilter from "./components/filters/SelectFilter";

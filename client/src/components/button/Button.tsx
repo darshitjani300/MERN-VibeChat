@@ -12,6 +12,7 @@ const ButtonComp = (props: Props) => {
       className={`${styles.btn} ${loading ? styles.loading : ""} `}
       disabled={loading}
       type="submit"
+      
     >
       {loading ? (
         <>

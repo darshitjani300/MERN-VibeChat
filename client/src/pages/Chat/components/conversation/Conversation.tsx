@@ -1,6 +1,7 @@
-import NavIcon from "../../../../../components/icons/NavIcon";
+
+import NavIcon from "../../../../components/icons/NavIcon";
+import { data } from "../../../../data/data";
 import styles from "./conversation.module.scss";
-import { data } from "../../../../../data/data";
 
 const Conversation = () => {
   return (

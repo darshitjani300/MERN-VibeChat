@@ -1,9 +1,9 @@
-import styles from "./message.module.scss";
+import styles from "./placeholdermessage.module.scss";
 
-const Messages = () => {
+const PlaceholderMessage = () => {
   return (
     <div className={styles.messageContainer}>
-      <div className={styles.container} >
+      <div className={styles.container}>
         <img src="/favicon.svg" alt="Chat" className={styles.imageContainer} />
         <h5 className={styles.headerChat}>Chat anytime, anywhere</h5>
       </div>
@@ -11,4 +11,4 @@ const Messages = () => {
   );
 };
 
-export default Messages;
+export default PlaceholderMessage;

@@ -1,6 +1,7 @@
 import { useState } from "react";
-import NavIcon from "../../../components/icons/NavIcon";
+import NavIcon from "../icons/NavIcon";
 import styles from "./navmenu.module.scss";
+import { useNavigate } from "react-router-dom";
 
 type NavIconType = {
   id: number;
@@ -8,10 +9,12 @@ type NavIconType = {
   activeName: string;
   text: string;
   size?: number;
+  path?: string;
 };
 
 const NavMenu = () => {
   const [active, setActive] = useState<number>(1);
+  const navigate = useNavigate();
 
   const icons: Array<NavIconType> = [
     {
@@ -47,6 +50,7 @@ const NavMenu = () => {
       activeName: "LuBot",
       text: "Profile",
       size: 28,
+      path: "/profile",
     },
   ];
 
@@ -100,7 +104,10 @@ const NavMenu = () => {
                     className={`${styles.icon} ${
                       isActive ? styles.activeIcon : ""
                     }`}
-                    onClick={() => setActive(elem?.id)}
+                    onClick={() => {
+                      setActive(elem?.id);
+                      navigate(elem?.path || "/");
+                    }}
                   >
                     <NavIcon
                       className={

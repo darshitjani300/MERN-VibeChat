@@ -5,9 +5,9 @@ const BaseUrl = import.meta.env.VITE_BASE_URL;
 const axiosInstace = axios.create({
   baseURL: BaseUrl,
   timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
   withCredentials: true,
 });
 

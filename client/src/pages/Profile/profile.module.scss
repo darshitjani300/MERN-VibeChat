@@ -1,0 +1,73 @@
+@use "../../assets/styles/entry" as *;
+
+.wrapper {
+  display: flex;
+  width: 100%;
+
+  .leftContainer {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 50px;
+    padding: 50px 20px;
+
+    gap: 30px;
+
+    .imageContainer {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 120px;
+        width: 140px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
+
+    .inputContainer {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .label {
+        font-size: medium;
+        font-weight: 600;
+        color: $color-icon;
+      }
+
+      .inputWrapper {
+        width: 100%;
+        display: flex;
+        gap: 30px;
+
+        .input {
+          width: 100%;
+          outline: none;
+          background: transparent;
+          border: 1px;
+          border-bottom: 1px solid $border-primary;
+        }
+
+        .icon {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .rightContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .image {
+      height: 140px;
+      margin-bottom: 10px;
+    }
+  }
+}

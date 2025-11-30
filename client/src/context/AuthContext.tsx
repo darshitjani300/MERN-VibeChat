@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setLoading(true);
 
     try {
-      const res = await axiosInstace.get("/auth/me");
+      const res = await axiosInstace.get("/v1/auth/me");
       setUser(res.data.user || null);
       saveCachedUser(res.data.user);
     } catch (error) {

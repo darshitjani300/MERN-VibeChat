@@ -1,4 +1,4 @@
-import NavIcon from "../../../../../components/icons/NavIcon";
+import NavIcon from "../../../../components/icons/NavIcon";
 import styles from "./chatsearch.module.scss";
 
 const ChatSearch = () => {
