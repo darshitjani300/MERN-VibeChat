@@ -30,6 +30,7 @@
     justify-content: space-between;
     align-items: center;
 
+
     .upperContainer,
     .lowerContainer {
       display: flex;
@@ -43,6 +44,12 @@
       align-items: center;
       transition: 0.2s ease-in;
       margin-bottom: 10px;
+
+      .profilePhoto {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+      }
 
       .text {
         color: $gray-600;
@@ -58,7 +65,6 @@
       .iconStyle{
         color: $color-icon;
       }
-      
       .iconStyleActive{
         color: $color-primary;
       }

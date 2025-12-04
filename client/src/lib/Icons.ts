@@ -6,6 +6,7 @@ import {
   IoSettingsSharp,
   IoSettingsOutline,
   IoAdd,
+  IoSend
 } from "react-icons/io5";
 import { LuBot, LuBotOff } from "react-icons/lu";
 import { RiChatNewLine } from "react-icons/ri";
@@ -33,4 +34,5 @@ export {
   MdOutlineEdit,
   FaRegCopy,
   TiTickOutline,
+  IoSend
 };

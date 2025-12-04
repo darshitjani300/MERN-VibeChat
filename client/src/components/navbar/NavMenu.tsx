@@ -2,6 +2,7 @@ import { useState } from "react";
 import NavIcon from "../icons/NavIcon";
 import styles from "./navmenu.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../types/reduxHooks";
 
 type NavIconType = {
   id: number;
@@ -10,11 +11,13 @@ type NavIconType = {
   text: string;
   size?: number;
   path?: string;
+  urlPath?: string;
 };
 
 const NavMenu = () => {
   const [active, setActive] = useState<number>(1);
   const navigate = useNavigate();
+  const data = useAppSelector((state) => state.userSlice.userProfile);
 
   const icons: Array<NavIconType> = [
     {
@@ -22,6 +25,7 @@ const NavMenu = () => {
       name: "IoChatboxEllipsesOutline",
       activeName: "IoChatboxEllipses",
       text: "Chat",
+      path: "/home",
     },
     {
       id: 2,
@@ -51,6 +55,7 @@ const NavMenu = () => {
       text: "Profile",
       size: 28,
       path: "/profile",
+      urlPath: (data as { picture: string }).picture as any,
     },
   ];
 
@@ -72,7 +77,10 @@ const NavMenu = () => {
                     className={`${styles.icon} ${
                       isActive ? styles.activeIcon : ""
                     }`}
-                    onClick={() => setActive(elem?.id)}
+                    onClick={() => {
+                      setActive(elem?.id);
+                      navigate(elem?.path || "/");
+                    }}
                   >
                     <NavIcon
                       name={isActive ? elem?.activeName : elem?.name}
@@ -109,13 +117,22 @@ const NavMenu = () => {
                       navigate(elem?.path || "/");
                     }}
                   >
-                    <NavIcon
-                      className={
-                        isActive ? styles.iconStyleActive : styles.iconStyle
-                      }
-                      name={isActive ? elem?.activeName : elem?.name}
-                      size={elem?.size}
-                    />
+                    {elem?.urlPath ? (
+                      <img
+                        src={`http://localhost:5002${elem.urlPath}`}
+                        alt="photo"
+                        className={styles.profilePhoto}
+                      />
+                    ) : (
+                      <NavIcon
+                        className={
+                          isActive ? styles.iconStyleActive : styles.iconStyle
+                        }
+                        name={isActive ? elem?.activeName : elem?.name}
+                        size={elem?.size}
+                      />
+                    )}
+
                     <span
                       className={`${styles.text} ${
                         isActive ? styles.activeText : ""

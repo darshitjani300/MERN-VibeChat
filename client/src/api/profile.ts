@@ -13,3 +13,10 @@ export const getProfileApi = async () => {
   const response = await axiosInstace.get("/v1/getProfile");
   return response;
 };
+
+export const getAllProfileApi = async () => {
+  const response = await axiosInstace.get("/v1/getAllProfile");
+  return response;
+};
+
+

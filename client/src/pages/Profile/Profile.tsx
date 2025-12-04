@@ -42,8 +42,6 @@ const Profile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Inside ", profileData);
-
     try {
       const formData = new FormData();
       if (profileData.name && editMode.name == false)
