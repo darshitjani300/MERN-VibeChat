@@ -29,7 +29,6 @@ export const ProfileController = async (req: Request, res: Response) => {
 
     if (file) {
       const imageUrl = `/images/uploads/${file.filename}`;
-      console.log("image url ", imageUrl);
       updatedUser.picture = imageUrl;
     }
 
@@ -69,9 +68,22 @@ export const GetProfileController = async (req: Request, res: Response) => {
     }
 
     const profile = await Profile.findOne({ userId: user.userId });
-
-    console.log(profile);
     return res.status(200).json({ message: "Profile found", profile });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const GetAllProfileController = async (req: Request, res: Response) => {
+  try {
+    const user = (req as any).user;
+    if (!user || !user.userId) {
+      return res.status(401).json({ message: "User is not authenticated." });
+    }
+
+    const profile = await Profile.find();
+    return res.status(200).json({ message: "Success", profile });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Something went wrong" });
