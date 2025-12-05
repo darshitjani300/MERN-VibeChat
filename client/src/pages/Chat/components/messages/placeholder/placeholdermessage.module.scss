@@ -1,11 +1,10 @@
+@use "../../../../../assets/styles/entry" as *;
+
 .messageContainer {
   font-size: 30px;
   background: #f1f4fa;
-  width: 70%;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
 
   .container {
     display: flex;
@@ -13,5 +12,12 @@
     .imageContainer {
       height: 120px;
     }
+  }
+
+  @include respond("md") {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
   }
 }

@@ -6,16 +6,42 @@
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
-  width: 30%;
-
+  width: 100%;
 
   .headerContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 
     h1 {
       font-size: 1.8rem;
     }
   }
+
+  .profilePhoto {
+    display: block;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    @include respond("md") {
+      display: none;
+    }
+  }
+
+  @include respond("md") {
+    width: 50%;
+  }
+
+  @include respond("lg") {
+    width: 40%;
+  }
+
+  @include respond("xl") {
+    width: 35%;
+  }
+}
+
+.msgWrapper {
+  display: none;
 }

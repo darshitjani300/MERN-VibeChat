@@ -102,3 +102,17 @@
     }
   }
 }
+
+.msgMobile {
+  width: 100%;
+  @include respond("md") {
+    width: auto;
+  }
+}
+
+.noMessage {
+  display: none;
+  @include respond("md") {
+    display: flex;
+  }
+}

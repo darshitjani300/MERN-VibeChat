@@ -6,7 +6,8 @@ import {
   IoSettingsSharp,
   IoSettingsOutline,
   IoAdd,
-  IoSend
+  IoSend,
+  IoArrowBackOutline,
 } from "react-icons/io5";
 import { LuBot, LuBotOff } from "react-icons/lu";
 import { RiChatNewLine } from "react-icons/ri";
@@ -16,6 +17,7 @@ import { FaMicrophone } from "react-icons/fa";
 import { MdOutlineEdit } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa6";
 import { TiTickOutline } from "react-icons/ti";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 export {
   IoChatboxEllipses,
@@ -34,5 +36,7 @@ export {
   MdOutlineEdit,
   FaRegCopy,
   TiTickOutline,
-  IoSend
+  IoSend,
+  BsThreeDotsVertical,
+  IoArrowBackOutline,
 };

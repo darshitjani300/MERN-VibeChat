@@ -1,14 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import NavIcon from "../../../../components/icons/NavIcon";
-import { useAppSelector } from "../../../../types/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../../types/reduxHooks";
 import styles from "./message.module.scss";
 import { socket } from "../../../../socket/socket";
+import { closeChatVal } from "../../../../redux/features/open/openChat.slice";
+
 const Message = () => {
   const userProfile = useAppSelector((state) => state.userSlice.profile);
   const [input, setInput] = useState<string>("");
   const messages = useAppSelector((state) => state.userSlice.messages);
   const userData = useAppSelector((state) => state.userSlice.userProfile);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const openMobileChat = useAppSelector((state) => state.chatSlice.open);
+  const dispatch = useAppDispatch();
+
+  console.log(openMobileChat)
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +28,10 @@ const Message = () => {
     setInput("");
   };
 
+  const handleBack = () => {
+    dispatch(closeChatVal());
+  };
+
   useEffect(() => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollTop = chatEndRef.current.scrollHeight;
@@ -29,9 +39,17 @@ const Message = () => {
   }, [messages]);
 
   return (
-    <div className={styles.messageWrapper}>
+    <div
+      className={`${styles.messageWrapper} ${
+        openMobileChat ? styles.msgMobile : styles.noMessage
+      } `}
+    >
       <div className={styles.headerSection}>
         <div className={styles.container}>
+          <button onClick={handleBack}>
+            <NavIcon name="IoArrowBackOutline" size={22} />
+          </button>
+
           <div className={styles.imageContainer}>
             <img
               src={`http://localhost:5002${userProfile.picture}`}
@@ -42,6 +60,7 @@ const Message = () => {
 
           <h4 className={styles.name}>{userProfile.name}</h4>
         </div>
+
         <div className={styles.rightSide}>
           <NavIcon name="IoIosSearch" />
         </div>
@@ -77,6 +96,7 @@ const Message = () => {
           <div className={styles.attachment}>
             <NavIcon name="IoAdd" />
           </div>
+
           <div className={styles.input}>
             <input
               type="text"
@@ -86,6 +106,7 @@ const Message = () => {
               onChange={(e) => setInput(e.target.value)}
             />
           </div>
+
           <button className={styles.speech} type="submit">
             <NavIcon name="IoSend" size={22} />
           </button>

@@ -118,12 +118,11 @@ const Signup = () => {
 
             {/* Form section */}
             <form className={styles.form} onSubmit={handleSubmit}>
-              <h2 className={styles.title}>Create your VibeChat account 🚀</h2>
               <p className={styles.subtitles}>
                 Join thousands of conversations happening every day. Quick,
                 private, and made for connection.
               </p>
-              <div>
+              <div className={styles.inputContainer}>
                 <InputComp
                   placeholder="Enter name"
                   label="Username"
@@ -157,9 +156,7 @@ const Signup = () => {
 
             <hr className={styles.divider} />
 
-            {/* Alternative login */}
             <div className={styles.altLogin}>
-              <ButtonComp btn="Or Sign up with Google" />
               <p className={styles.switchAuth}>
                 Aready have an account?{" "}
                 <Link to={"/login"} className={styles.switchLink}>

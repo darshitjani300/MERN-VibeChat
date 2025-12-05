@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NavIcon from "../../components/icons/NavIcon";
 import styles from "./profile.module.scss";
 import { getProfileApi, profileApi } from "../../api/profile";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -14,6 +15,7 @@ const Profile = () => {
 
   const userString = localStorage.getItem("user");
   const [user, _] = useState(userString ? JSON.parse(userString) : "");
+  const navigate = useNavigate();
 
   const [editMode, setEditMode] = useState({
     name: true,
@@ -91,6 +93,9 @@ const Profile = () => {
   return (
     <div className={styles.wrapper}>
       <form className={styles.leftContainer} onSubmit={handleSubmit}>
+        <button onClick={() => navigate(-1)} className={styles.btnBack}>
+          <NavIcon name="IoArrowBackOutline" />
+        </button>
         <div className={styles.imageContainer}>
           <img
             src={
@@ -100,9 +105,10 @@ const Profile = () => {
                 ? `http://localhost:5002${profileData.pictureUrl}`
                 : "/default-avatar.png"
             }
-            alt="Hello"
+            alt="profile"
           />
         </div>
+
         <input
           type="file"
           accept="image/*"
@@ -164,6 +170,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
+
         <div className={styles.inputContainer}>
           <label htmlFor="about" className={styles.label}>
             About
@@ -200,6 +207,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
+
         <div className={styles.inputContainer}>
           <label htmlFor="email" className={styles.label}>
             Email
@@ -217,10 +225,6 @@ const Profile = () => {
             </button>
           </div>
         </div>
-
-        {/* <div>
-          <ButtonComp btn="Save" />
-        </div> */}
       </form>
 
       <div className={styles.rightContainer}>

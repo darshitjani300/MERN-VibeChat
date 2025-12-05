@@ -55,10 +55,7 @@ const ForgetPassword = () => {
     <section>
       <div className={styles.container}>
         <div className={styles.imageContainer}>
-          <img
-            src="/src/assets/images/forget.webp"
-            alt="VibeChat background"
-          />
+          <img src="/src/assets/images/forget.webp" alt="VibeChat background" />
         </div>
 
         <div className={styles.formContainer}>
@@ -74,7 +71,6 @@ const ForgetPassword = () => {
 
             {isEmailSent ? (
               <div className={styles.successCont}>
-                <h2 className={styles.title}>Check your inbox 📬</h2>
                 <p className={styles.subtitle}>
                   We’ve sent a secure password reset link to
                   <b> {email}</b>. Click the link inside to create a new
@@ -90,21 +86,21 @@ const ForgetPassword = () => {
             ) : (
               <>
                 <form className={styles.form} onSubmit={handleSubmit}>
-                  <h2 className={styles.title}>Forgot your password?</h2>
                   <p className={styles.subtitle}>
                     Happens to the best of us 😅 Enter your registered email,
                     and we’ll send you a secure link to reset your password.
                   </p>
-
-                  <InputComp
-                    placeholder="Enter your email"
-                    label="Email"
-                    name="email"
-                    inputType="email"
-                    value={email}
-                    onChange={handleChange}
-                    error={errorState}
-                  />
+                  <div className={styles.inputContainer}>
+                    <InputComp
+                      placeholder="Enter your email"
+                      label="Email"
+                      name="email"
+                      inputType="email"
+                      value={email}
+                      onChange={handleChange}
+                      error={errorState}
+                    />
+                  </div>
 
                   <ButtonComp btn="Send Reset Link" loading={loading} />
                 </form>
@@ -114,7 +110,7 @@ const ForgetPassword = () => {
                 <div className={styles.formFooter}>
                   <p className={styles.rememberSection}>
                     Remembered your password?{" "}
-                    <Link to={"/login"} className={styles.rememberLink}>
+                    <Link to={"/login"} className={styles.switchLink}>
                       Back to Login
                     </Link>
                   </p>

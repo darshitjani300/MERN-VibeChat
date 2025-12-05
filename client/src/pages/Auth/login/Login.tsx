@@ -116,14 +116,12 @@ const Login = () => {
 
             {/* Login Form */}
             <form className={styles.form} onSubmit={handleSubmit}>
-              <h2 className={styles.title}>Welcome back 👋</h2>
-
               <p className={styles.subtitle}>
                 Connecting you with the people who matter — fast, secure, and
                 seamless.
               </p>
 
-              <div>
+              <div className={styles.inputContainer}>
                 <InputComp
                   placeholder="Enter email"
                   label="Email"
@@ -162,7 +160,6 @@ const Login = () => {
 
             {/* Alternate Login */}
             <div className={styles.altLogin}>
-              <ButtonComp btn="Continue with Google" />
               <p className={styles.switchAuth}>
                 New here?{" "}
                 <Link to="/signup" className={styles.switchLink}>

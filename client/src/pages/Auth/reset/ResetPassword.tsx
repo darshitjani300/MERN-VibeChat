@@ -141,31 +141,31 @@ const ResetPassword = () => {
             ) : (
               <>
                 <form className={styles.form} onSubmit={handleSubmit}>
-                  <h2 className={styles.title}>Set a new password 🔒</h2>
+                  {" "}
                   <p className={styles.subtitle}>
                     Looks like you’re getting back in — great to have you again!
                     Choose a strong password to secure your VibeChat account.
                   </p>
-
-                  <InputComp
-                    placeholder="Enter new password"
-                    label="New Password"
-                    inputType="password"
-                    name="password"
-                    value={userData.password}
-                    onChange={handleChange}
-                    error={errorState.password}
-                  />
-                  <InputComp
-                    placeholder="Confirm new password"
-                    label="Confirm Password"
-                    inputType="password"
-                    name="confirmPassword"
-                    value={userData.confirmPassword}
-                    onChange={handleChange}
-                    error={errorState.confirmPassword}
-                  />
-
+                  <div className={styles.inputContainer}>
+                    <InputComp
+                      placeholder="Enter new password"
+                      label="New Password"
+                      inputType="password"
+                      name="password"
+                      value={userData.password}
+                      onChange={handleChange}
+                      error={errorState.password}
+                    />
+                    <InputComp
+                      placeholder="Confirm new password"
+                      label="Confirm Password"
+                      inputType="password"
+                      name="confirmPassword"
+                      value={userData.confirmPassword}
+                      onChange={handleChange}
+                      error={errorState.confirmPassword}
+                    />
+                  </div>
                   <ButtonComp btn="Reset Password" loading={loading} />
                 </form>
 
@@ -174,7 +174,7 @@ const ResetPassword = () => {
                 <div className={styles.formFooter}>
                   <p className={styles.rememberSection}>
                     Remembered your password?{" "}
-                    <span className={styles.rememberLink}>
+                    <span className={styles.switchLink}>
                       <Link to="/login">Back to Login</Link>
                     </span>
                   </p>

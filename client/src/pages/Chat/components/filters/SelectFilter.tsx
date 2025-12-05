@@ -5,8 +5,7 @@ const SelectFilter = () => {
   const [activeItem, setActiveItem] = useState<number>(0);
   const filterItems = [
     { name: "All Chats", id: 0 },
-    { name: "Unread", id: 1 },
-    { name: "Groups", id: 2 },
+    { name: "Unread", id: 1 }
   ];
 
   return (

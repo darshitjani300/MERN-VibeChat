@@ -35,20 +35,6 @@ const NavMenu = () => {
       size: 32,
     },
     {
-      id: 3,
-      name: "LuBotOff",
-      activeName: "LuBot",
-      text: "Bot",
-      size: 28,
-    },
-    {
-      id: 4,
-      name: "IoSettingsOutline",
-      activeName: "IoSettingsSharp",
-      text: "Settings",
-      size: 26,
-    },
-    {
       id: 5,
       name: "LuBotOff",
       activeName: "LuBot",
@@ -59,7 +45,7 @@ const NavMenu = () => {
     },
   ];
 
-  const upperIcons = icons?.splice(0, 3);
+  const upperIcons = icons?.splice(0, 2);
   const lowerIcons = icons;
 
   return (

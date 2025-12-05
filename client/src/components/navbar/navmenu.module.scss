@@ -5,6 +5,7 @@
   min-height: 0;
   background: $color-white;
   margin-right: 10px;
+  display: none;
 
   .containerWrapper {
     height: 100%;
@@ -29,7 +30,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
 
     .upperContainer,
     .lowerContainer {
@@ -62,12 +62,16 @@
       .activeText {
         font-weight: 600;
       }
-      .iconStyle{
+      .iconStyle {
         color: $color-icon;
       }
-      .iconStyleActive{
+      .iconStyleActive {
         color: $color-primary;
       }
     }
+  }
+
+  @include respond("md") {
+    display: flex;
   }
 }

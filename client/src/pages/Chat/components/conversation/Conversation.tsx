@@ -11,6 +11,7 @@ import {
 } from "../../../../redux/features/chat/chat.slice";
 import { socket } from "../../../../socket/socket";
 import { getMessagesApi } from "../../../../api/messages";
+import { openChatVal } from "../../../../redux/features/open/openChat.slice";
 
 const Conversation = () => {
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ const Conversation = () => {
   ) => {
     dispatch(userSetid(id));
     dispatch(storeProfile(item));
+    dispatch(openChatVal(true));
 
     try {
       const res = await getMessagesApi(id);
@@ -72,7 +74,9 @@ const Conversation = () => {
   }, [userData?.userId]);
 
   return (
-    <div className={styles.conversationWrapper}>
+    <div
+      className={styles.conversationWrapper}
+    >
       <div className={styles.containerWrapper}>
         {filterData.map((item) => (
           <div
